@@ -1,7 +1,19 @@
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
-function Home({ aboutData }) {
-  const { title, slogan } = aboutData;
+
+export default function Home() {
+  const [aboutData, setAboutData] = useState(null);
+
+  useEffect(() => {
+    fetch('https://strapi-production-ca04.up.railway.app/api/about')
+      .then((res) => res.json())
+      .then((data) => {
+        setAboutData(data.data.attributes)
+      })
+  }, [])
+  console.log(aboutData);
+  // const { title, slogan } = aboutData;
   return (
     <>
       <Head>
@@ -11,27 +23,9 @@ function Home({ aboutData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <p>{title}</p>
-        <p>{slogan}</p>
+        <p>{aboutData?.title}</p>
+        <p>{aboutData?.slogan}</p>
       </main>
     </>
   )
 }
-
-export async function getServerSideProps() {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  const res = await fetch('https://strapi-production-ca04.up.railway.app/api/about')
-  const about = await res.json();
-  const aboutData = about.data.attributes;
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      aboutData,
-    }
-  }
-}
-
-export default Home;
