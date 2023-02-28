@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 function Home({ aboutData }) {
   const { title, slogan } = aboutData;
+  console.log(aboutData);
   return (
     <>
       <Head>
@@ -31,6 +32,7 @@ export async function getStaticProps() {
     props: {
       aboutData,
     },
+    revalidate: 10,
   }
 }
 
