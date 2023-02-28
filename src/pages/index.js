@@ -2,7 +2,6 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 function Home({ aboutData }) {
   const { title, slogan } = aboutData;
-  console.log(aboutData);
   return (
     <>
       <Head>
@@ -19,7 +18,7 @@ function Home({ aboutData }) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
   const res = await fetch('https://strapi-production-ca04.up.railway.app/api/about')
@@ -31,8 +30,7 @@ export async function getStaticProps() {
   return {
     props: {
       aboutData,
-    },
-    revalidate: 10,
+    }
   }
 }
 
