@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
+import Image from 'next/image';
 
 export default function Home() {
   const [aboutData, setAboutData] = useState(null);
 
   useEffect(() => {
-    fetch('https://strapi-production-ca04.up.railway.app/api/about')
+    fetch('https://strapi-production-ca04.up.railway.app/api/about?populate=*')
       .then((res) => res.json())
       .then((data) => {
-        setAboutData(data.data.attributes)
+        setAboutData(data.data.attributes);
+        console.log(data.data.attributes);
       })
-  }, [])
-  console.log(aboutData);
-  // const { title, slogan } = aboutData;
+  }, []);
   return (
     <>
       <Head>
@@ -24,6 +24,9 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <p>{aboutData?.title}</p>
+        <div className={styles.image}>
+          <Image src={aboutData?.image?.data?.attributes?.url} alt='Alt image' fill />
+        </div>
         <p>{aboutData?.slogan}</p>
       </main>
     </>
